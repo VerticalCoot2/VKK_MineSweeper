@@ -1,0 +1,58 @@
+body
+{
+    margin: 0%;
+    margin-top: 20px;
+    align-items: center;
+    background-color: crimson;
+    cursor: -webkit-grab; cursor: grab;
+}
+
+.kozep
+{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.felso
+{
+    justify-content: space-around;
+    align-content: space-around;
+    align-items: center;
+}
+
+#cunciMokus
+{
+    background-color: white;
+    border: 1px solid #767676;
+    width: 177px;
+    height: 21px;
+    text-align: center;
+    border-radius: 3px;
+}
+.sor
+{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.oszlop
+{
+    display: flex;
+    width: 30px;
+    height: 30px;
+    border: 1px solid black;
+    background-color: white;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+#PATYAAAA
+{
+    width: max-content;
+    height: max-content;
+    border: 5px solid black;
+    background-color: black;
+}
