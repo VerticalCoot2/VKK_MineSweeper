@@ -48,6 +48,7 @@ function akGeneral(sor, oszlop, hova, diff)
             oszlopElem.classList.add("oszlop");
             oszlopElem.setAttribute("id", i + "-" + j);
             //oszlopElem.classList.add(i + j);
+            oszlopElem.dataset.felforditva = "false";
             oszlopElem.dataset.x = i;
             oszlopElem.dataset.y = j;
             oszlopElem.addEventListener("contextmenu", function (event)
@@ -64,57 +65,39 @@ function akGeneral(sor, oszlop, hova, diff)
     logika(akLogika, diff) // százalék!!
 }
 
-function nulaaaaaa(a, x, y)
-{
-    if ((x > 1 || x < s-1) && (y > 1 || y < o-1))
-    {
-        felcsap(document.getElementById((x - 1) + "-" + (y - 1)));
-        felcsap(document.getElementById((x + 0) + "-" + (y - 1)));
-        felcsap(document.getElementById((x + 1) + "-" + (y - 1)));
-
-        felcsap(document.getElementById((x - 1) + "-" + y));
-        felcsap(document.getElementById((x + 1) + "-" + y));
-
-        felcsap(document.getElementById((x - 1) + "-" + (y + 1)));
-        felcsap(document.getElementById((x + 0) + "-" + (y + 1)));
-        felcsap(document.getElementById((x + 1) + "-" + (y + 1)));
-        /*for(let i = x -1 > 0 ? x-1 : 0; i < akLogika-length - 1 > x ? x +2 : akLogika.length - 1; i++)
-        {
-            for(let j = y - 1 >= 0 ? y-1 : 0; j < akLogika[0].length - 1 > y ? y + 2 : akLogika[0].length - 1; j++)
-            {
-                felcsap(document.getElementById((i) + "-" + (j)));
+function nullas(bx,by){
+    let ak=document.getElementById("PATYAAAA");
+    let ford = [{x: bx, y: by}];
+    while(ford.length>0){
+        let ki=ford.shift();
+        let x = parseInt(ki.x);
+        let y = parseInt(ki.y);
+        akLogika[x][y]="u";
+        
+        for (let i = x-1>=0 ? x-1 : 0; i < (akLogika.length-1>x ? x+2 : akLogika.length); i++) {          
+            for (let j = y-1>=0 ? y-1 : 0; j < (akLogika[0].length-1>y ? y+2 : akLogika[0].length); j++) {
+                if(akLogika[i][j]==0){
+                    ford.push({x: i, y: j});
+                }
+                let boti = ak.children[i].children[j];
+                boti.innerHTML=akLogika[i][j]!=0 && akLogika[i][j]!="u"? innerHTML=akLogika[i][j] : "";
+                
+                if (akLogika[i][j]!="u")
+                {
+                    boti.style.backgroundColor = "gray";
+                }
+                else
+                {
+                    boti.style.backgroundColor = "darkgray";
+                }
+                boti.style.color = "white";
+                boti.style.border = "1px, solid white"
+                boti.dataset.felforditva = "true";
+                boti.removeEventListener("mousedown", csigabiga);
             }
-        }*/
-    }
-    else
-    {
-        alert("Studium general");
-    }
-}
-
-function felcsap(a)
-{   
-    console.log(a);
-    if(!(a.innerHTML == "&#128681" || a.innerHTML == "🚩")) 
-    {
-        a.style.color = "white";
-        a.style.border = "1px, solid white";
-        a.innerHTML = akLogika[a.dataset.x][a.dataset.y];
-        if (akLogika[a.dataset.x][a.dataset.y] == "💣")
-        {
-            a.style.backgroundColor = "red";
-            reveal(win);
-            alert("nop!");
-        } else if (akLogika[a.dataset.x][a.dataset.y] != 0)
-        {
-            a.style.backgroundColor = "gray";
-        }
-        else
-        {
-            a.style.backgroundColor = "darkgray";
-            nulaaaaaa(a, a.dataset.x, a.dataset.y);
         }
     }
+    
 }
 
 function csigabiga()
@@ -135,7 +118,9 @@ function csigabiga()
         else {
             a.style.backgroundColor = "darkgray";
             //nulaaaaaa(a, a.dataset.x, a.dataset.y);
+            nullas(a.dataset.x, a.dataset.y);
         }
+        a.dataset.felforditva = "true";
     }
     if (event.button == 2 && (a.innerHTML == "" || a.innerHTML == "&#128681" || a.innerHTML == "🚩"))
     {
@@ -178,32 +163,7 @@ function csigabiga()
             alert("Nincs több akna jelződ");
         }
     }
-}
-
-function forditas()
-{
-    let terulet = document.getElementById("PATYAAAA");
-    for (let i = 0; i < terulet.children.length; i++)
-    {
-        for (let j = 0; j < terulet.children[i]; j++)
-        {
-            if (akLogika[i][j] == "💣")
-            {
-                terulet.children[i].style.backgroundColor = "red";
-            } else if (akLogika[i][j] != 0)
-            {
-                terulet.children[i].style.backgroundColor = "gray";
-            }
-            else
-            {
-                terulet.children[i].stylele.backgroundColor = "darkgray";
-            }
-            terulet.children[i].style.color = "white";
-            terulet.children[i].style.border = "1px, solid white";
-            terulet.children[i].removeEventListener("click", csigabiga);
-            terulet.children[i].innerHTML = akLogika[i][j];
-        }
-    }
+    megszamol();
 }
 
 function logika(akL, arany)
@@ -280,7 +240,7 @@ function reveal(win)
                     }
                 }
             }
-            else if (akLogika[i][j] != 0)
+            else if (akLogika[i][j] != 0 && akLogika[i][j] != "u")
             {
                 patyu_a_pityu.style.backgroundColor = "gray";
             }
@@ -291,7 +251,42 @@ function reveal(win)
             patyu_a_pityu.style.color = "white";
             patyu_a_pityu.style.border = "1px, solid white";
             patyu_a_pityu.removeEventListener("mousedown", csigabiga);
-            patyu_a_pityu.innerHTML = akLogika[i][j];
+
+            if(akLogika[i][j] != "u")
+            {
+                patyu_a_pityu.innerHTML = akLogika[i][j];
+            }
+            else
+            {
+                patyu_a_pityu.innerHTML = "0";
+            }
         }
     }
+}
+
+function megszamol()
+{
+    let num = 0;
+    let cucc;
+    for(let i = 0;i < sor; i++)
+    {
+        for(let j = 0; j < o; j++)
+        {
+            cucc = document.getElementById(i+"-"+j);
+            /*console.log(cucc);
+            console.log(akLogika[i][j]);*/
+            if(cucc.dataset.felforditva == "true")
+            {
+                num++;
+            }
+        }
+    }
+    console.log(num);
+    if(num == (o*s) - maxAkna)
+    {
+        win = true;
+        reveal(win);
+        alert("Nyertél!");
+    }
+
 }
